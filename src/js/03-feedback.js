@@ -24,22 +24,24 @@ function formState(event) {
 
 function setValues() {
   if (localValues) {
-    formEl.elements.email.value = localValues.email;
-    formEl.elements.message.value = localValues.message;
-  } else {
-    formEl.elements.email.value = '';
-    formEl.elements.message.value = '';
+    formEl.elements.email.value = localValues.email || '';
+    formEl.elements.message.value = localValues.message || '';
   }
 }
 
 function submitForm(event) {
   event.preventDefault();
 
-  storage.remove(`feedback-form-state`);
-
   const {
     elements: { email, message },
   } = event.currentTarget;
+
+  if (email.value === '' || message.value === '') {
+    alert`Всі поля повинні бути заповнені!`;
+    return;
+  }
+
+  storage.remove(`feedback-form-state`);
 
   const inputValues = {
     email: email.value,
